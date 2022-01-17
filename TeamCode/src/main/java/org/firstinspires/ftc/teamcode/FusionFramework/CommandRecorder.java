@@ -107,4 +107,14 @@ public class CommandRecorder {
 
         writer.flush(); // force data to be written to the file
     }
+
+    public void finishLastCommand(int backright, int backleft) {
+        if (cmd_in_progress == false) return;
+
+        double time = cmd_timer.time(); // reports duration of timer in milliseconds
+        writer.print( backright + ", " + backleft + " );\n"); // terminate the command in the log
+        cmd_in_progress = false;
+
+        writer.flush(); // force data to be written to the file
+    }
 }

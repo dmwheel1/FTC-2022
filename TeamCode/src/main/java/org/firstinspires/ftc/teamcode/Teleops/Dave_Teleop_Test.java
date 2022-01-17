@@ -163,9 +163,12 @@ public class Dave_Teleop_Test extends OpMode {
         drivetrain.getEncoderValues(backright, backleft);
 
         // TODO: write the encoder values to the file (we have to change the CommandRecord to do this)
+        backright = backright - m_backright;
+        backleft = backleft - m_backleft;
+
 
         // Complete the last command and write to the file
-        cr.finishLastCommand(); // will only write if there was a first command
+        cr.finishLastCommand(backright, backleft); // will only write if there was a first command
 
 
         // double back = sensorfusion.
