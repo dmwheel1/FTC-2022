@@ -26,7 +26,6 @@ public class CommandRecorder {
     private boolean     cmd_in_progress = false;
     private ElapsedTime cmd_timer = null;
 
-    private byte[]      ip_address = {(byte)192, (byte)168, 43, 1};
 
     public CommandRecorder(String filename, Telemetry t) {
         telemetry = t; // pass on the connection to the Driver's Station telemetry
@@ -69,8 +68,7 @@ public class CommandRecorder {
     }
 
     public boolean initializeCommandRecording() {
-        // Try to contact the server to send the data to
-        InputStream input = null;
+        // TMake sure the file is set up so we can write into it
         if (writer == null) {
             telemetry.addLine("File was not set up properly - it's null");
             telemetry.update();
@@ -94,6 +92,10 @@ public class CommandRecorder {
         cmd_timer.reset(); // start a timer to record how long to run the command
         writer.print( command ); // record the command
         cmd_in_progress = true;
+    }
+
+    public void writeEncoderValuesToFile( ) {
+        // TODO: implement this
     }
 
     public void finishLastCommand( ) {

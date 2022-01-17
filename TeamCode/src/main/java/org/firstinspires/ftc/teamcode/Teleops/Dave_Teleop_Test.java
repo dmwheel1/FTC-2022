@@ -37,8 +37,6 @@ public class Dave_Teleop_Test extends OpMode {
 
     private CommandRecorder cr;
 
-    private int run_state;
-
     private ElapsedTime tm_arm = null;
     private ElapsedTime tm_elbow = null;
 
@@ -98,7 +96,6 @@ public class Dave_Teleop_Test extends OpMode {
         frontSensor = telemetry.addData("Distance Front: ", 0.0);
         backSensor = telemetry.addData("Distance Front: ", 0.0);
 
-        run_state = 0;
     }
 
     @Override
@@ -133,37 +130,6 @@ public class Dave_Teleop_Test extends OpMode {
     @Override
     public void loop() {
 
-        // Run through states until the connection with the server is completed
-        switch (run_state) {
-            case 0:
-                msgItem.setValue("Trying to create CommandRecorder ...");
-                telemetry.update();
-                run_state = 1;
-                return;
-            case 1:
-                cr = new CommandRecorder("MyRobotPath", telemetry);
-                msgItem.setValue("CommandRecorder object created and file is open ...");
-                telemetry.update();
-                run_state = 2;
-                return;
-            case 2:
-                msgItem.setValue("Trying to write to the file...");
-                telemetry.update();
-                run_state = 3;
-                return;
-            case 3:
-                if ( cr.initializeCommandRecording() == false) { // init timer
-
-                    msgItem.setValue("initialize CommandRecording failed - can't write to the file");
-                    telemetry.update();
-
-                } else {
-                    msgItem.setValue("File opened and ready able to write!!!");
-                    telemetry.update();
-                }
-                run_state = 100;
-                break;
-        }
 
         /* DRIVE ROBOT --------------------------------------------------------------------------*/
         /*
@@ -174,18 +140,30 @@ public class Dave_Teleop_Test extends OpMode {
         drive(drive, strafe, rotate);
         */
 
-        // Terminate the last command
-        cr.finishLastCommand(); // will only write if there was a first command
-
         double Lpower = gamepad1.left_stick_y;
         double Rpower = gamepad1.right_stick_y;
         telemetry.addData("Speed: ", "L:%.2f  R:%.2f", Lpower, Rpower);
+
 
         double front = sensorfusion.getFrontDistance();
         frontSensor.setValue(front);
         double back  = sensorfusion.getBackDistance();
         backSensor.setValue(back);
-        //
+
+
+        // Before doing the next command, make sure to finish the last command we wrote to the file
+
+
+        // TODO: Read the back wheels encoder values
+        // backRightEncoder = ???
+        // backLeftEncoder = ???
+
+        // TODO: write the encoder values to the file (we have to change the CommandRecord to do this)
+
+        // Complete the last command and write to the file
+        cr.finishLastCommand(); // will only write if there was a first command
+
+
         // double back = sensorfusion.
         if (front < LastFrontMeasure && front < 6 && (Lpower > 0 || Rpower > 0)) {
             telemetry.addLine("front distance sensor stopped forward movement");
@@ -194,6 +172,11 @@ public class Dave_Teleop_Test extends OpMode {
         } else {
             // record this command
             cr.writeNewCommand("drivetrain.Drive( " + Lpower + ", " + Rpower + ", ");
+
+            // TODO: Read the back wheels encoder values and save to a class member variable
+            // m_backRightEncoder = ???
+            // m_backLeftEncoder = ???
+
             drivetrain.Drive(Lpower, Rpower);
             LastFrontMeasure = front;
             LastBackMeasure = back;
