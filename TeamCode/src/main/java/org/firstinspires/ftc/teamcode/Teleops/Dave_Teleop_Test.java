@@ -105,13 +105,14 @@ public class Dave_Teleop_Test extends OpMode {
         super.stop();
     }
 
+    private void turnOnStopAndReset() {
+        robot.setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
     private void turnOnRunUsingEncoder() {
         robot.setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private void turnOnStopAndReset() {
-        robot.setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
 
     /*
     private void drive(final double drive, final double strafe, final double rotate) {

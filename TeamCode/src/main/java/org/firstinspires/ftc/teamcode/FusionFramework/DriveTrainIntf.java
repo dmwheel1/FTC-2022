@@ -39,6 +39,10 @@ public class DriveTrainIntf {
         }
     }
 
+    public void getEncoderValues(int backRight, int backLeft ) {
+        
+    }
+
     public void Drive(double LFp, double RFp, double LRp, double RRp) {
 
     }
