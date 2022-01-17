@@ -40,7 +40,8 @@ public class DriveTrainIntf {
     }
 
     public void getEncoderValues(int backRight, int backLeft ) {
-        
+        backLeft = robot.getLeftRearDrive().getCurrentPosition();
+        backRight = robot.getRightRearDrive().getCurrentPosition();
     }
 
     public void Drive(double LFp, double RFp, double LRp, double RRp) {
