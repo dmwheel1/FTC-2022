@@ -31,6 +31,8 @@ public class Dave_Teleop_Test extends OpMode {
     private final RobotSetup robot = new RobotSetup();   // Get the Hardware Setup for this robot
     private DriveTrainIntf drivetrain;
     private SimpleSensorFusion sensorfusion;
+    private int m_backleft;
+    private int m_backright;
 
     private double LastFrontMeasure;
     private double LastBackMeasure;
@@ -155,9 +157,10 @@ public class Dave_Teleop_Test extends OpMode {
         // Before doing the next command, make sure to finish the last command we wrote to the file
 
 
-        // TODO: Read the back wheels encoder values
-        // backRightEncoder = ???
-        // backLeftEncoder = ???
+        // Read the back wheels encoder values
+        int backright = 0;
+        int backleft = 0;
+        drivetrain.getEncoderValues(backright, backleft);
 
         // TODO: write the encoder values to the file (we have to change the CommandRecord to do this)
 
@@ -174,9 +177,8 @@ public class Dave_Teleop_Test extends OpMode {
             // record this command
             cr.writeNewCommand("drivetrain.Drive( " + Lpower + ", " + Rpower + ", ");
 
-            // TODO: Read the back wheels encoder values and save to a class member variable
-            // m_backRightEncoder = ???
-            // m_backLeftEncoder = ???
+            // Read the back wheels encoder values and save to a class member variable
+             drivetrain.getEncoderValues(m_backleft, m_backright);
 
             drivetrain.Drive(Lpower, Rpower);
             LastFrontMeasure = front;
