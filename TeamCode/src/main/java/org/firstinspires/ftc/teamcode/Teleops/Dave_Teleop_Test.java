@@ -42,6 +42,7 @@ public class Dave_Teleop_Test extends OpMode {
     private ElapsedTime tm_arm = null;
     private ElapsedTime tm_elbow = null;
 
+
     Telemetry.Item msgItem ;
     Telemetry.Item frontSensor ;
     Telemetry.Item backSensor ;
@@ -84,6 +85,8 @@ public class Dave_Teleop_Test extends OpMode {
      */
     @Override
     public void start() {
+        cr = new CommandRecorder("Thing1.txt", telemetry);
+        cr.initializeCommandRecording();
 
         LastFrontMeasure = sensorfusion.getFrontDistance();
         LastBackMeasure = sensorfusion.getBackDistance();
@@ -165,6 +168,7 @@ public class Dave_Teleop_Test extends OpMode {
         // TODO: write the encoder values to the file (we have to change the CommandRecord to do this)
         backright = backright - m_backright;
         backleft = backleft - m_backleft;
+
 
 
         // Complete the last command and write to the file
